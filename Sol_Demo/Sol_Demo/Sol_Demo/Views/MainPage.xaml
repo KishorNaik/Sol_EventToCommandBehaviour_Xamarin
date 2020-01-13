@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:VM="clr-namespace:Sol_Demo.ViewModels"
+             xmlns:CB="clr-namespace:Sol_Demo.Behaviors"
+             mc:Ignorable="d"
+             x:Class="Sol_Demo.Views.MainPage">
+
+    <ContentPage.BindingContext>
+        <VM:UsersViewModel></VM:UsersViewModel>
+    </ContentPage.BindingContext>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <ListView 
+            Grid.Row="0" 
+            Grid.Column="0" 
+            x:Name="lstUsers" 
+            ItemsSource="{Binding ListUsers}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout>
+                            <Label Text="{Binding FirstName}"></Label>
+                            <Label Text="{Binding LastName}"></Label>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+            <ListView.Behaviors>
+                <CB:EventToCommandBehavior 
+                    EventName="ItemSelected" 
+                    Command="{Binding OnSelectedItemCommand}" 
+                    CommandParameter="{Binding Source={x:Reference lstUsers}, Path=SelectedItem}"></CB:EventToCommandBehavior>
+            </ListView.Behaviors>
+            
+        </ListView>
+
+        <Label 
+            Grid.Row="1" 
+            Grid.Column="0" 
+            Text="{Binding SelectedUserData}"
+            TextColor="Red"
+            ></Label>
+    </Grid>
+
+</ContentPage>
